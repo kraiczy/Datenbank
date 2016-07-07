@@ -4,6 +4,9 @@
 #include <QList>
 #include <QString>
 
+/**
+ * @brief The Database class
+ */
 class Database
 {
 private:

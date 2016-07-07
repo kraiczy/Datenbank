@@ -7,7 +7,10 @@ Database::Database()
 {
 
 }
-
+/**
+ * @brief Database::SHOW
+ * @param params
+ */
 void Database::SHOW(QStringList params) {
     QFile file("../Datenbank/" + params[1] + ".csv");
 
@@ -25,7 +28,10 @@ void Database::SHOW(QStringList params) {
         outputData();
    }
 }
-
+/**
+ * @brief Database::SELECT
+ * @param params
+ */
 void Database::SELECT(QStringList params) {
     QString selection = params.at(1).toUpper();
     QString database;
@@ -34,6 +40,7 @@ void Database::SELECT(QStringList params) {
     QList<QString> headers;
     int columnIndex;
     QList<QString> words;
+    QTextStream output(stdout);
 
     if(params.at(2).toUpper() == "FROM") {
         database = params.at(3).toLower();
@@ -43,10 +50,10 @@ void Database::SELECT(QStringList params) {
             column = whereparams.at(0).trimmed().toUpper();
             value = whereparams.at(1).trimmed();
         } else {
-            //error
+            output << "Error!" << endl;
         }
     } else {
-        //error
+        output << "Error!" << endl;
     }
 
     // Open File and get the data
@@ -62,7 +69,7 @@ void Database::SELECT(QStringList params) {
                 data.append(headers);
                 columnIndex = headers.indexOf(column);
                 if(columnIndex < 0) {
-                    //error
+                    output << "Error!" << endl;
                 }
             }
             words = line.split(";");
@@ -80,6 +87,7 @@ void Database::SELECT(QStringList params) {
 void Database::INSERT(QStringList params) {
     QString database;
     QString valueString;
+    QTextStream output(stdout);
 
     if(params.at(1).toUpper() == "INTO") {
         database = params.at(2).toLower();
@@ -101,17 +109,21 @@ void Database::INSERT(QStringList params) {
                 file.close();
             }
         } else {
-            //error
+            output << "Error!" << endl;
         }
     } else {
-        //error
+        output << "Error!" << endl;
     }
 }
-
+/**
+ * @brief Database::DELETE
+ * @param params
+ */
 void Database::DELETE(QStringList params) {
     QString database;
     QString column;
     QString value;
+    QTextStream output(stdout);
 
     if(params.at(1).toUpper() == "FROM") {
         database = params.at(2).toLower();
@@ -121,10 +133,10 @@ void Database::DELETE(QStringList params) {
             column = whereparams.at(0).trimmed().toUpper();
             value = whereparams.at(1).trimmed();
         } else {
-            //error
+            output << "Error!" << endl;
         }
     } else {
-        //error
+        output << "Error!" << endl;
     }
 
     QFile file("../Datenbank/" + database + ".csv");
@@ -140,7 +152,7 @@ void Database::DELETE(QStringList params) {
                 headers = line.split(";");
                 columnIndex = headers.indexOf(column);
                 if(columnIndex < 0) {
-                    //error
+                    output << "Error!" << endl;
                 }
             }
             QList<QString> words = line.split(";");
@@ -152,9 +164,11 @@ void Database::DELETE(QStringList params) {
     // update the file;
     file.resize(0);
     QTextStream stream(&file);
-    stream << "Tesz";
+    stream << "Test";
 }
-
+/**
+ * @brief Database::outputData
+ */
 void Database::outputData() {
     QTextStream output(stdout);
 
